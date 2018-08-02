@@ -6,9 +6,20 @@ import { mapStyle } from './data/mapStyle';
 import './index.css';
 
 class App extends Component {
-
+/************************* 
+Constructor
+*************************/
+    constructor(props) {
+      super(props);
+      this.state = {
+            locations : locations,
+            query: '',
+            markers: [],
+            infowindow: new this.props.google.maps.InfoWindow()
+        }
+    }
     /************************* 
-    Load Map
+    Load Map (https://www.fullstackreact.com/articles/how-to-write-a-google-maps-react-component/)
     *************************/
     componentDidMount() {
         this.loadMap()
@@ -29,13 +40,41 @@ class App extends Component {
                 zoom: zoom,
                 styles: mapStyle,
             })
-            this.map = new maps.Map(node, mapConfig)
+            this.map = new maps.Map(node, mapConfig);
+            this.addMarkers();
         }
     }
 
+    /************************* 
+    Add markers
+    *************************/
+    addMarkers = () => {
+        const {google} = this.props
+        let {infowindow} = this.state
+        const bounds = new google.maps.LatLngBounds();
+
+        this.state.locations.forEach((location) => {
+            const marker = new google.maps.Marker({
+                map: this.map,
+                position: {lat: location.location.lat,lng: location.location.lng},
+                icon: './map-marker.png',
+                title: location.title,
+                img: location.img,
+                address: location.address,
+                animation: window.google.maps.Animation.DROP,
+            });
+            this.setState((state) => ({
+                markers: [...state.markers, marker]
+            }))
+            bounds.extend(marker.position)
+        })
+        this.map.fitBounds(bounds)
+    }
+
+
   render() {
     /************************* 
-    Display the app on the page
+    Display the app on page
     *************************/
     return (
       <div google={this.props.google}>
