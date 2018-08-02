@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import escapeRegExp from 'escape-string-regexp';
+import sortBy from 'sort-by';
 import { GoogleApiWrapper } from 'google-maps-react';
 import { locations } from './data/locations';
 import { mapStyle } from './data/mapStyle';
@@ -118,9 +120,32 @@ Constructor
     }
 
 
+    /************************* 
+    Search bar
+    *************************/
+    updateQuery =(query) => {
+        this.setState({query: query})
+    }
+
+
+/********************************************************* 
+*********************************************************/
   render() {
 
-    const {markers} = this.state
+    /************************* 
+    Make search on the search bar (FEND Nanodegree => Lesson 2 Concept 7 : Controlled Components)
+    *************************/
+    let showLocations
+
+    if (this.state.query){
+        const match = new RegExp(escapeRegExp(this.state.query),'i')
+        showLocations = locations.filter((location) => match.test(location.title))
+    } else{ 
+        showLocations = locations 
+    }
+    showLocations.sort(sortBy('name'))
+
+
     /************************* 
     Display the app on page
     *************************/
@@ -130,10 +155,12 @@ Constructor
                    
               <h1>Parks to visit in my neighborhood</h1>
 
-              <input className="search" role="search" type="text" placeholder="Search..." />
+              <input className="search" role="search" type="text" placeholder="Search..." value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)} />
                    
               <ul className="list">
-              {markers.map((getLoc, i) => <li key={i}>{getLoc.title}</li>)}
+              {showLocations.map((getLoc, index) => (
+              <li key={index}>{getLoc.title}</li>
+              ))}
               </ul>
 
           </div>
