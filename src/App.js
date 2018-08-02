@@ -63,12 +63,33 @@ Constructor
                 address: location.address,
                 animation: window.google.maps.Animation.DROP,
             });
+            marker.addListener('click', () => {
+                this.openInfoWindow(marker, infowindow)
+            })
             this.setState((state) => ({
                 markers: [...state.markers, marker]
             }))
             bounds.extend(marker.position)
         })
         this.map.fitBounds(bounds)
+    }
+
+    /************************* 
+    Control infowindow
+    *************************/
+    openInfoWindow = (marker, infowindow) => {
+        if (infowindow.marker !== marker) {
+            infowindow.marker = marker;
+            infowindow.setContent(`<h3>${marker.title}</h3><img src="${marker.img}" alt="${marker.title}"><p>${marker.address}</p>`);
+            infowindow.open(this.map, marker);
+            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+            setTimeout(function() {
+                marker.setAnimation(null);
+            }, 1000);
+            infowindow.addListener('closeclick', function() {
+                infowindow.marker = null;
+            });
+        }
     }
 
 
