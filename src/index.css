@@ -40,3 +40,24 @@ h1 {
 	padding-left: 25px;
     margin-bottom: 10px;
 }
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul li {
+	padding: 14px 25px;
+	border-top: 0.5px solid #d7ead3;
+	cursor: pointer;
+    font-size: 14px;
+}
+
+ul li:first-child{
+    border-top: none;
+}
+
+ul li:hover {
+	background-color: #86bf78;
+}
