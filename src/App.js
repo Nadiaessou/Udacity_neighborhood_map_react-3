@@ -43,8 +43,8 @@ Constructor
             const node = ReactDOM.findDOMNode(mapRef);
 
             let zoom = 12;
-            let lat = 48.7763046;
-            let lng = 2.334603300000026;
+            let lat = 48.7993046;
+            let lng = 2.333603300000026;
             const center = new maps.LatLng(lat, lng);
 
             const mapConfig = Object.assign({}, {
@@ -66,8 +66,7 @@ Constructor
     *************************/
     addMarkers = () => {
         const {google} = this.props
-        let {infowindow} = this.state
-        const bounds = new google.maps.LatLngBounds();
+        const {infowindow} = this.state
 
         this.state.locations.forEach((location) => {
             const marker = new google.maps.Marker({
@@ -85,9 +84,7 @@ Constructor
             this.setState((state) => ({
                 markers: [...state.markers, marker]
             }))
-            bounds.extend(marker.position)
         })
-        this.map.fitBounds(bounds)
     }
 
 
