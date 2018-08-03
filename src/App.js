@@ -33,6 +33,7 @@ Constructor
 
             const {google} = this.props
             const maps = google.maps
+
             const mapRef = this.refs.map
             const node = ReactDOM.findDOMNode(mapRef);
 
@@ -49,6 +50,8 @@ Constructor
 
             this.map = new maps.Map(node, mapConfig);
             this.addMarkers();
+        } else {
+            console.log("Error! Google Maps has failed to load.");
         }
     }
 
@@ -85,20 +88,24 @@ Constructor
     Control infowindow
     *************************/
     openInfoWindow = (marker, infowindow) => {
+            const {google} = this.props
+            
         if (infowindow.marker !== marker) {
-            infowindow.marker = marker;
-            infowindow.setContent(
-                `<h4>${marker.title}</h4>
-                <img src="${marker.img}" alt="${marker.title}">
-                <p>${marker.address}</p>`
-            );
+
+            const description =
+            `<h4>${marker.title}</h4>
+            <img src="${marker.img}" alt="${marker.title}">
+            <p>${marker.address}</p>`
+
+            infowindow.setContent(description);
             infowindow.open(this.map, marker);
-            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+            marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function() {
                 marker.setAnimation(null);
             }, 1000);
         }
     }
+
 
     /************************* 
     Display location when we click on list (https://www.youtube.com/watch?v=9t1xxypdkrE)
