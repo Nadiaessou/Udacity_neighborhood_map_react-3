@@ -107,6 +107,7 @@ Constructor
             setTimeout(function() {
                 marker.setAnimation(null);
             }, 1000);
+            this.MarkerInfos(marker);
         }
     }
 
@@ -149,6 +150,32 @@ Constructor
     }
 
 
+    /***********************************************************************
+    FOURSQUARE
+    ***********************************************************************/
+    MarkerInfos(marker) {
+        const apiURL = 'https://api.foursquare.com/v2/venues/';
+        const client_id = "R1HTROMSXLTPXEDVMUCVFS3LNMIHXVTQ4QDN1JOPXADYTT5R";
+        const client_secret = "1LBOYE2OKD04WRPKLT1EMV0SOUMOEQYBTVVKO5SKQZQE2B4X";
+        const url = apiURL + "search?client_id=" + client_id + "&client_secret=" + client_secret + "&v=20130815&ll=" + marker.position.lat() + "," + marker.position.lng() + "&limit=1";
+
+        fetch(url)
+            .then(response => {
+                    if (response.status !== 200) {
+                        document.querySelector(".foursquareInfo").innerHTML = "Sorry information about this park can't be loaded";
+                        return;
+                    }
+                    response.json().then(data => {
+                        const dataLoc = data.response.venues[0];
+                        const informations = '<a href="https://foursquare.com/v/' + dataLoc.id + '" target="_blank">More about ' + marker.title + ' on Foursquare</a>'
+                        document.querySelector(".foursquareInfo").innerHTML = informations;
+                    });
+                }
+            )
+    }
+
+
+
 /********************************************************* 
 *********************************************************/
 
@@ -173,7 +200,7 @@ Constructor
     Display the app on page
     *************************/
     return (
-      <div google={this.props.google}>
+      <div>
           <div className="container">
                    
               <h1>Parks to visit in my neighborhood</h1>
@@ -188,8 +215,13 @@ Constructor
               
               <button className="showHide" onClick={this.toggleShowHide}>Show/Hide</button>
           </div>
+
+          <div className="foursquare">
+                <img src="./images/logo-foursquare.png" alt="logo foursquare" className="logo-f" />
+                <p className="foursquareInfo"></p>
+          </div>
                 
-          <div  ref="map" role="application" className="map">
+          <div  ref="map" role="application" className="map" google={this.props.google}>
           Loading Map...
           </div>
       </div>

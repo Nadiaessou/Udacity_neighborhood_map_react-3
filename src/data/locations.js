@@ -11,7 +11,7 @@ export const locations = [{
                     img: './images/lac-de-creteil.jpg'
                 },
                 {
-                    title: "Parc départemental de la Roseraie",
+                    title: "Parc de la Roseraie",
                     location : {lat: 48.7763046, lng: 2.334603300000026},
                     address: "Rue Robert Watel 94240 L'Haÿ-les-Roses",
                     img: './images/parc-roseraie.jpg'
