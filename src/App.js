@@ -97,9 +97,11 @@ Constructor
         if (infowindow.marker !== marker) {
 
             const description =
-            `<h4>${marker.title}</h4>
+            `<div aria-label="marker info" tabIndex="1">
+            <h4>${marker.title}</h4>
             <img src="${marker.img}" alt="${marker.title}">
-            <p>${marker.address}</p>`
+            <p>${marker.address}</p>
+            </div>`
 
             infowindow.setContent(description);
             infowindow.open(this.map, marker);
@@ -203,25 +205,25 @@ Constructor
       <div>
           <div className="container">
                    
-              <h1>Parks to visit in my neighborhood</h1>
+              <h1 aria-label="title" tabIndex="1">Parks to visit in my neighborhood</h1>
 
-              <input className="search" role="search" type="text" placeholder="Search..." value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)} />
+              <input className="search" role="search" type="text" placeholder="Search..." value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)}  value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)} aria-label="search location" tabIndex="1" />
                    
-              <ul className="list">
+              <ul className="list" aria-label="list of locations" tabIndex="1">
               {showLocations.map((getLoc, i) => (
-              <li key={i}>{this.state.buttonShowHide && getLoc.title}</li>
+              <li key={i} aria-label={getLoc.title} tabIndex="1">{this.state.buttonShowHide && getLoc.title}</li>
               ))}
               </ul>
               
-              <button className="showHide" onClick={this.toggleShowHide}>Show/Hide</button>
+              <button className="showHide" onClick={this.toggleShowHide} aria-label="show hide button" tabIndex="1">Show/Hide</button>
           </div>
 
           <div className="foursquare">
                 <img src="./images/logo-foursquare.png" alt="logo foursquare" className="logo-f" />
-                <p className="foursquareInfo"></p>
+                <p className="foursquareInfo" aria-label="foursquare infos" tabIndex="1"></p>
           </div>
                 
-          <div  ref="map" role="application" className="map" google={this.props.google}>
+          <div  ref="map" role="application" tabIndex="-1" className="map" google={this.props.google}>
           Loading Map...
           </div>
       </div>
