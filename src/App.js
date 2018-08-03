@@ -8,6 +8,7 @@ import { mapStyle } from './data/mapStyle';
 import './index.css';
 
 class App extends Component {
+
 /************************* 
 Constructor
 *************************/
@@ -17,9 +18,13 @@ Constructor
             locations : locations,
             query: '',
             markers: [],
+            buttonShowHide: true,
             infowindow: new this.props.google.maps.InfoWindow()
         }
+        this.toggleShowHide = this.toggleShowHide.bind(this);
     }
+
+
     /************************* 
     Load Map (https://www.fullstackreact.com/articles/how-to-write-a-google-maps-react-component/)
     *************************/
@@ -55,6 +60,7 @@ Constructor
         }
     }
 
+
     /************************* 
     Add markers
     *************************/
@@ -83,6 +89,7 @@ Constructor
         })
         this.map.fitBounds(bounds)
     }
+
 
     /************************* 
     Control infowindow
@@ -135,9 +142,21 @@ Constructor
     }
 
 
+    /************************* 
+    SHOW/HIDE
+    *************************/
+    toggleShowHide() {
+        this.setState({
+            buttonShowHide: !this.state.buttonShowHide
+        });
+    }
+
+
 /********************************************************* 
 *********************************************************/
+
   render() {
+
 
     /************************* 
     Make search on the search bar (FEND Nanodegree => Lesson 2 Concept 7 : Controlled Components)
@@ -165,11 +184,12 @@ Constructor
               <input className="search" role="search" type="text" placeholder="Search..." value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)} />
                    
               <ul className="list">
-              {showLocations.map((getLoc, index) => (
-              <li key={index}>{getLoc.title}</li>
+              {showLocations.map((getLoc, i) => (
+              <li key={i}>{this.state.buttonShowHide && getLoc.title}</li>
               ))}
               </ul>
-
+              
+              <button className="showHide" onClick={this.toggleShowHide}>Show/Hide</button>
           </div>
                 
           <div  ref="map" role="application" className="map">
