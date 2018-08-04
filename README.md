@@ -21,7 +21,17 @@ Clicking on the button 'show/hide' will show or hide the list.
   ```
 2. Run the command `npm install` and `npm start`
 
-3. A new browser window open automatically displaying the app. If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in your browser
+3. A new browser window open automatically displaying the app. If it doesn't, navigate to [http://localhost:3000/](http://localhost:3000/) in your browser  
+
+4. You can run the build for testing the service worker by using `npm run build` and `npm run deploy`.
+
+## How I have completed this project
+- I generated an API key in Google APIs Console : https://console.developers.google.com/  
+- I created my React app  
+- I used google-maps-react package for loading my Google Map  
+- I read articles, use Udacity forum and see tutorials that I have mentioned in 'resources' just below  
+- Then I displayed the map on page, add markers, add infowindow, display a list of location, make an event when we click a location in the list, add a search bar, add a toggle button for showing or hiding the list, make all responsive with media queries.  
+- I created an account in FourSquare and I used this API to provided a link with more information about the locations  
 
 ## Resources
 * React
