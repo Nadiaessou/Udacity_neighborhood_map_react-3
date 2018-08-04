@@ -25,6 +25,8 @@ Constructor
     }
 
 
+
+
     /************************* 
     Load Map (https://www.fullstackreact.com/articles/how-to-write-a-google-maps-react-component/)
     *************************/
@@ -55,10 +57,10 @@ Constructor
 
             this.map = new maps.Map(node, mapConfig);
             this.addMarkers();
-        } else {
-            console.log("Error! Google Maps has failed to load.");
         }
     }
+
+
 
 
     /************************* 
@@ -68,24 +70,26 @@ Constructor
         const {google} = this.props
         const {infowindow} = this.state
 
-        this.state.locations.forEach((location) => {
+        this.state.locations.forEach((loc) => {
             const marker = new google.maps.Marker({
                 map: this.map,
-                position: {lat: location.location.lat,lng: location.location.lng},
+                position: {lat: loc.location.lat,lng: loc.location.lng},
                 icon: './map-marker.png',
-                title: location.title,
-                img: location.img,
-                address: location.address,
+                title: loc.title,
+                img: loc.img,
+                address: loc.address,
                 animation: window.google.maps.Animation.DROP,
             });
             marker.addListener('click', () => {
-                this.openInfoWindow(marker, infowindow)
+                this.openInfoWindow(marker, infowindow);
             })
             this.setState((state) => ({
                 markers: [...state.markers, marker]
             }))
         })
     }
+
+
 
 
     /************************* 
@@ -106,50 +110,17 @@ Constructor
             infowindow.setContent(description);
             infowindow.open(this.map, marker);
             marker.setAnimation(google.maps.Animation.BOUNCE);
-            setTimeout(function() {
+            setTimeout(() => {
                 marker.setAnimation(null);
             }, 1000);
             this.MarkerInfos(marker);
-        }
+        } 
+        google.maps.event.addListener(infowindow,'closeclick',function(){
+            document.querySelector(".foursquareInfo").innerHTML = '';
+        })  
     }
 
 
-    /************************* 
-    Display location when we click on list (https://www.youtube.com/watch?v=9t1xxypdkrE)
-    *************************/
-    onClickLocation = () => {
-        const that = this
-        const {infowindow} = this.state
-
-        const displayInfowindow = (e) => {
-        const {markers} = this.state
-        const markerInd = markers.findIndex(m => m.title === e.target.innerText)
-        that.openInfoWindow(markers[markerInd], infowindow)
-        }
-        document.querySelector('.list').addEventListener('click', function (e) {
-            if(e.target && e.target.nodeName === "LI") {
-                displayInfowindow(e)
-            }
-        })
-    }
-
-
-    /************************* 
-    Search bar
-    *************************/
-    updateQuery =(query) => {
-        this.setState({query: query})
-    }
-
-
-    /************************* 
-    SHOW/HIDE
-    *************************/
-    toggleShowHide() {
-        this.setState({
-            buttonShowHide: !this.state.buttonShowHide
-        });
-    }
 
 
     /***********************************************************************
@@ -164,24 +135,70 @@ Constructor
         fetch(url)
             .then(response => {
                     if (response.status !== 200) {
-                        document.querySelector(".foursquareInfo").innerHTML = "Sorry information about this park can't be loaded";
-                        return;
-                    }
+                        document.querySelector(".foursquareInfo").innerHTML = "Sorry informations about this park can't be loaded";
+                    } else{
                     response.json().then(data => {
                         const dataLoc = data.response.venues[0];
                         const informations = '<a href="https://foursquare.com/v/' + dataLoc.id + '" target="_blank">More about ' + marker.title + ' on Foursquare</a>'
                         document.querySelector(".foursquareInfo").innerHTML = informations;
                     });
                 }
-            )
+            })
     }
 
 
 
-/********************************************************* 
-*********************************************************/
+    /************************* 
+    Display location when we click on list (https://www.youtube.com/watch?v=9t1xxypdkrE)
+    *************************/
+    onClickLocation = () => {
+        const that = this
+        const {infowindow} = this.state
+
+        const displayInfowindow = (e) => {
+        const {markers} = this.state
+        const markerInd = markers.findIndex(m => m.title.toLowerCase() === e.target.innerText.toLowerCase())
+        that.openInfoWindow(markers[markerInd], infowindow)
+        }
+        document.querySelector('.list').addEventListener('click', (e) => {
+            if(e.target && e.target.nodeName === "LI") {
+                displayInfowindow(e)
+            }
+        })
+    }
+
+
+
+
+    /************************* 
+    Search bar
+    *************************/
+    updateQuery =(query) => {
+        this.setState({query: query})
+    }
+
+
+
+
+    /************************* 
+    SHOW/HIDE
+    *************************/
+    toggleShowHide() {
+        this.setState({
+            buttonShowHide: !this.state.buttonShowHide
+        });
+    }
+
+
+
+
+
+
+/****************************************************************************************************************** 
+******************************************************************************************************************/
 
   render() {
+
 
 
     /************************* 
@@ -198,6 +215,7 @@ Constructor
     showLocations.sort(sortBy('name'))
 
 
+
     /************************* 
     Display the app on page
     *************************/
@@ -207,7 +225,7 @@ Constructor
                    
               <h1 aria-label="title" tabIndex="1">Parks to visit in my neighborhood</h1>
 
-              <input className="search" role="search" type="text" placeholder="Search..." value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)}  value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)} aria-label="search location" tabIndex="1" />
+              <input className="search" role="search" type="text" placeholder="Search..." value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)} aria-label="search location" tabIndex="1" />
                    
               <ul className="list" aria-label="list of locations" tabIndex="1">
               {showLocations.map((getLoc, i) => (
@@ -231,9 +249,11 @@ Constructor
   }
 }
 
+
+
 /************************* 
 Load Google Map (https://www.npmjs.com/package/google-maps-react)
 *************************/
 export default GoogleApiWrapper({
-    apiKey: ('AIzaSyA9rKFjC26zoyv2Rr7pD8BNaIx-PmDtJh0')
+    apiKey: ('AIzaSyBKtzAZYGTw6jOWG73rIwuxGtTgZeure1U')
 })(App)
