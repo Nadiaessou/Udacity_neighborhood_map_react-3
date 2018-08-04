@@ -30,7 +30,7 @@ Clicking on the button 'show/hide' will show or hide the list.
 - I created my React app  
 - I used google-maps-react package for loading Google Map  
 - I read articles, use Udacity forum and courses, and see tutorials that I have mentioned in 'resources' just below  
-- Then I displayed the map on page, add markers, add infowindow, display a list of location, make an event when we click a location in the list, add a search bar, add a toggle button for showing or hiding the list, make all responsive with media queries.  
+- Then I displayed the map on page, add markers, add infowindow, display a list of location, make an event when we click a location in the list, add a search bar by using the package 'escapeRegExp' and 'sortBy', add a toggle button for showing or hiding the list, make all responsive with media queries and set accessibility (ARIA).  
 - I created an account in FourSquare and I used this API to provided a link with more information about locations  
 
 ## Resources
@@ -45,3 +45,5 @@ Clicking on the button 'show/hide' will show or hide the list.
 * https://itnext.io/google-maps-react-makes-adding-google-maps-api-to-a-react-app-a-breeze-effb7b89e54
 * https://www.youtube.com/watch?v=9t1xxypdkrE
 * https://stackoverflow.com/tags/react-google-maps/hot?filter=all
+* https://developer.foursquare.com/docs/api/configuration/authentication
+* https://discussions.udacity.com/search?q=foursquare%20

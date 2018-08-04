@@ -115,7 +115,7 @@ Constructor
             }, 1000);
             this.MarkerInfos(marker);
         } 
-        google.maps.event.addListener(infowindow,'closeclick',function(){
+        google.maps.event.addListener(infowindow,'closeclick', () => {
             document.querySelector(".foursquareInfo").innerHTML = '';
         })  
     }
@@ -124,13 +124,14 @@ Constructor
 
 
     /***********************************************************************
-    FOURSQUARE
+    FOURSQUARE (https://developer.foursquare.com/docs/api/configuration/authentication
+    and https://discussions.udacity.com/search?q=foursquare%20)
     ***********************************************************************/
     MarkerInfos(marker) {
         const apiURL = 'https://api.foursquare.com/v2/venues/';
         const client_id = "R1HTROMSXLTPXEDVMUCVFS3LNMIHXVTQ4QDN1JOPXADYTT5R";
         const client_secret = "1LBOYE2OKD04WRPKLT1EMV0SOUMOEQYBTVVKO5SKQZQE2B4X";
-        const url = apiURL + "search?client_id=" + client_id + "&client_secret=" + client_secret + "&v=20130815&ll=" + marker.position.lat() + "," + marker.position.lng() + "&limit=1";
+        const url = apiURL + "search?client_id=" + client_id + "&client_secret=" + client_secret + "&v=20160801&ll=" + marker.position.lat() + "," + marker.position.lng() + "&limit=1";
 
         fetch(url)
             .then(response => {
