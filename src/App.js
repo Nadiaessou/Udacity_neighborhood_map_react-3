@@ -142,7 +142,9 @@ Constructor
                         const dataLoc = data.response.venues[0];
                         const informations = '<a href="https://foursquare.com/v/' + dataLoc.id + '" target="_blank">More about ' + marker.title + ' on Foursquare</a>'
                         document.querySelector(".foursquareInfo").innerHTML = informations;
-                    });
+                    }).catch(() => {
+                   document.querySelector(".foursquareInfo").innerHTML = "Sorry, Foursquare data doesn't load";
+                });
                 }
             })
     }
@@ -206,6 +208,7 @@ Constructor
     Make search on the search bar (FEND Nanodegree => Lesson 2 Concept 7 : Controlled Components)
     *************************/
     let showLocations
+    const {marker} = this.state;
 
     if (this.state.query){
         const match = new RegExp(escapeRegExp(this.state.query),'i')
