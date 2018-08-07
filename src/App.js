@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import escapeRegExp from 'escape-string-regexp';
-import sortBy from 'sort-by';
 import { GoogleApiWrapper } from 'google-maps-react';
 import { locations } from './data/locations';
 import { mapStyle } from './data/mapStyle';
@@ -118,6 +116,11 @@ Constructor
         google.maps.event.addListener(infowindow,'closeclick', () => {
             document.querySelector(".foursquareInfo").innerHTML = '';
         })  
+        //close infowindow when we click on map
+        google.maps.event.addListener(this.map, 'click', () => {
+            infowindow.close();
+            document.querySelector(".foursquareInfo").innerHTML = '';
+        });
     }
 
 
@@ -148,6 +151,7 @@ Constructor
                 }
             })
     }
+
 
 
 
@@ -195,27 +199,36 @@ Constructor
 
 
 
-
-
 /****************************************************************************************************************** 
 ******************************************************************************************************************/
 
   render() {
 
-
-
     /************************* 
-    Make search on the search bar (FEND Nanodegree => Lesson 2 Concept 7 : Controlled Components)
+    Make search on the search bar (https://discussions.udacity.com/t/filtering-markers-with-search/45331)
     *************************/
-    let showLocations
-
-    if (this.state.query){
-        const match = new RegExp(escapeRegExp(this.state.query),'i')
-        showLocations = locations.filter((location) => match.test(location.title))
-    } else{ 
-        showLocations = locations 
+    const {locations, query, markers} = this.state
+    
+    if (query) {
+        locations.forEach((getLoc, i) => {
+            if (getLoc.title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+            markers[i].setVisible(true)
+            } else {
+            markers[i].setVisible(false)
+            }
+        })
+      } 
+      //clear => display list
+      else {
+      locations.forEach((getLoc, i) => {
+        if (markers.length && markers[i]) {
+          markers[i].setVisible(true)
+        }
+      })
     }
-    showLocations.sort(sortBy('name'))
+    
+    const showLocations = markers.filter((getLoc) => getLoc.getVisible())
+
 
 
 
@@ -226,32 +239,31 @@ Constructor
       <div>
           <div className="container">
                    
-              <h1 aria-label="title" tabIndex="1">Parks to visit in my neighborhood</h1>
+                    <h1 aria-label="title" tabIndex="0">Parks to visit in my neighborhood</h1>
 
-              <input className="search" role="search" type="text" placeholder="Search..." value={this.state.query} onChange={(event)=> this.updateQuery(event.target.value)} aria-label="search location" tabIndex="1" />
-                   
-              <ul className="list" aria-label="list of locations" tabIndex="1">
-              {showLocations.map((getLoc, i) => (
-              <li key={i} aria-label={getLoc.title} tabIndex="1">{this.state.buttonShowHide && getLoc.title}</li>
-              ))}
-              </ul>
-              
-              <button className="showHide" onClick={this.toggleShowHide} aria-label="show hide button" tabIndex="1">Show/Hide</button>
-          </div>
+                    <input className="search" role="search" type="text" placeholder="Search..." value={query} onChange={(event)=> this.updateQuery(event.target.value)} aria-label="search location" tabIndex="0" />
+                        
+                    <ul className="list" aria-label="list of locations" tabIndex="0">
+                    {showLocations.map((getLoc, i) => (
+                    <li key={i} aria-label={getLoc.title} tabIndex="0">{this.state.buttonShowHide && getLoc.title}</li>
+                    ))}
+                    </ul>
+                    
+                    <button className="showHide" onClick={this.toggleShowHide} aria-label="show hide button" tabIndex="0">Show/Hide</button>
+            </div>
 
-          <div className="foursquare">
+            <div className="foursquare">
                 <img src="./images/logo-foursquare.png" alt="logo foursquare" className="logo-f" />
-                <p className="foursquareInfo" aria-label="foursquare infos" tabIndex="1"></p>
-          </div>
-                
-          <div  ref="map" role="application" tabIndex="-1" className="map" google={this.props.google}>
-          Loading Map...
-          </div>
+                <p className="foursquareInfo" aria-label="foursquare infos" tabIndex="0"></p>
+            </div>
+                    
+            <div  ref="map" role="application" tabIndex="-1" className="map" google={this.props.google}>
+            Loading Map...
+            </div>
       </div>
     );
   }
 }
-
 
 
 /************************* 
