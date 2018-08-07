@@ -208,7 +208,6 @@ Constructor
     Make search on the search bar (FEND Nanodegree => Lesson 2 Concept 7 : Controlled Components)
     *************************/
     let showLocations
-    const {marker} = this.state;
 
     if (this.state.query){
         const match = new RegExp(escapeRegExp(this.state.query),'i')
@@ -261,3 +260,16 @@ Load Google Map (https://www.npmjs.com/package/google-maps-react)
 export default GoogleApiWrapper({
     apiKey: ('AIzaSyBKtzAZYGTw6jOWG73rIwuxGtTgZeure1U')
 })(App)
+
+
+
+/************************* 
+ERROR ALERT
+*************************/
+document.addEventListener("DOMContentLoaded", (e) => {
+  const script = document.getElementsByTagName('script').item(1);
+  script.onerror = (e) => {
+    document.querySelector("#root").innerHTML = 
+    "<div class='box'><p>Google Maps has failed to load.<br /> Please check your internet connection and <span onclick={window.location.reload()}>reload the page</span>.</p><img src='./images/broken.png' alt='Maps error'></div><div class='maperror'></div>";
+  }
+});

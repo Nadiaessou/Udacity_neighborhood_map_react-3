@@ -106,9 +106,47 @@ ul li:hover {
 }
 
 
+/************** MAP ERROR **************/
+
+.maperror {
+	text-align: center;
+	background-image: url('data/map.png');
+	background-size: cover;
+	height: 100vh;
+	opacity: 0.3;
+}
+
+.box {
+	font-size: 18px;
+    line-height: 1.7em;
+	position: absolute;
+	box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+	z-index: 10;
+	background-color: white;
+	padding: 30px;
+	text-align: center;
+	left: 20%;
+	right: 20%;
+	top: 20%;
+}
+
+.box img {
+	width: 100px;
+}
+
+.box span {
+	cursor: pointer;
+	color: #60B44B;
+}
+
+
 /************** RESPONSIVE **************/
 @media screen and (max-width: 800px) {
 	.container {
 		width: 100%;
+	}
+	.box {
+	left: 10%;
+    right: 10%;
 	}
 }
